@@ -20,46 +20,62 @@ You can try adding in line breaks around 70 columns so the output looks
 better.
 """
 
-__author__ = "???"
+__author__ = "Kevin Clark with help from Joseph Hafed and JT"
 
 
 import random
 import sys
 
 
+"""Returns a dict mapping each word to a list of words which follow it.
+For example:
+    Input: "I am a software developer, and I don't care who knows"
+    Output:
+        {
+            "" : ["I"],
+            "I" : ["am", "don't"],
+            "am": ["a"],
+            "a": ["software"],
+            "software" : ["developer,"],
+            "developer," : ["and"],
+            "and" : ["I"],
+            "don't" : ["care"],
+            "care" : ["who"],
+            "who" : ["knows"]
+        }
+"""
+
+
 def create_mimic_dict(filename):
-    """Returns a dict mapping each word to a list of words which follow it.
-    For example:
-        Input: "I am a software developer, and I don't care who knows"
-        Output:
-            {
-                "" : ["I"],
-                "I" : ["am", "don't"],
-                "am": ["a"],
-                "a": ["software"],
-                "software" : ["developer,"],
-                "developer," : ["and"],
-                "and" : ["I"],
-                "don't" : ["care"],
-                "care" : ["who"],
-                "who" : ["knows"]
-            }
-    """
-    # +++your code here+++
-    pass
+    dictionary = {}
+    with open(filename) as f:
+        x = f.read()
+        lst = x.split()
+        last_word = ''
+        for word in lst:
+            if last_word in dictionary:
+                dictionary[last_word].append(word)
+            else:
+                dictionary[last_word] = [word]
+            last_word = word
+    return dictionary
 
 
 def print_mimic_random(mimic_dict, num_words):
-    """Given a previously created mimic_dict and num_words,
-    prints random words from mimic_dict as follows:
-        - Use a start_word of '' (empty string)
-        - Print the start_word
-        - Look up the start_word in your mimic_dict and get its next-list
-        - Randomly select a new word from the next-list
-        - Repeat this process num_words times
-    """
-    # +++your code here+++
-    pass
+    start_word = ''
+    for _ in range(num_words + 1):
+        print(start_word, end=' ')
+        next_word = mimic_dict.get(start_word, mimic_dict[''])
+        start_word = random.choice(next_word)
+
+    # start_word = ''
+    # for _ in range(num_words):
+    #     print(f"{start_word} ")
+    #     next_word = mimic_dict.get(start_word)
+    #     if start_word in mimic_dict:
+    #         start_word = random.choice(next_word)
+    #     else:
+    #         start_word = random.choice(mimic_dict[''])
 
 
 def main(args):
